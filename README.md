@@ -4,8 +4,8 @@ A high-performance data import engine for tour operator pricing data.
 
 ## 🚀 Quick Start
 
-### Using Docker (Recommended - Easy)
-```bash
+### Using Docker
+
 git clone https://github.com/MarinGjylameti/TourOperatorDataImport.git
 cd TourOperatorDataImport
 docker-compose up -d
