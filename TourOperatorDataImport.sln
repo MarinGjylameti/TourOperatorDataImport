@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourOperatorDataImport.Core", "TourOperatorDataImport.Core\TourOperatorDataImport.Core.csproj", "{F4397C4F-49B5-4502-A137-C9538F9FBF64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourOperatorDataImport.Infrastructure", "TourOperatorDataImport.Infrastructure\TourOperatorDataImport.Infrastructure.csproj", "{435A4878-2E08-460E-B300-B53A120EC69A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourOperatorDataImport.Application", "TourOperatorDataImport.Application\TourOperatorDataImport.Application.csproj", "{8E52EF9B-D746-4C79-9C8B-46A414FD3A8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourOperatorDataImport.API", "TourOperatorDataImport.API\TourOperatorDataImport.API.csproj", "{7A14C820-9F44-4B3E-9942-B9196877C9E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4397C4F-49B5-4502-A137-C9538F9FBF64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4397C4F-49B5-4502-A137-C9538F9FBF64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4397C4F-49B5-4502-A137-C9538F9FBF64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4397C4F-49B5-4502-A137-C9538F9FBF64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{435A4878-2E08-460E-B300-B53A120EC69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{435A4878-2E08-460E-B300-B53A120EC69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{435A4878-2E08-460E-B300-B53A120EC69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{435A4878-2E08-460E-B300-B53A120EC69A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E52EF9B-D746-4C79-9C8B-46A414FD3A8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E52EF9B-D746-4C79-9C8B-46A414FD3A8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E52EF9B-D746-4C79-9C8B-46A414FD3A8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E52EF9B-D746-4C79-9C8B-46A414FD3A8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A14C820-9F44-4B3E-9942-B9196877C9E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A14C820-9F44-4B3E-9942-B9196877C9E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A14C820-9F44-4B3E-9942-B9196877C9E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A14C820-9F44-4B3E-9942-B9196877C9E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

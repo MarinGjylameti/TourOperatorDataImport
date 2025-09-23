@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "TourOperatorDataImport.Core/1.0.0": {
+        "runtime": {
+          "TourOperatorDataImport.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TourOperatorDataImport.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

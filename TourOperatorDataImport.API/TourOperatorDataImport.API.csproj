@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.20" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="8.0.20" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.14.0" />
+        <PackageReference Include="Scalar.AspNetCore" Version="2.8.5" />
+        <PackageReference Include="Serilog" Version="4.3.1-dev-02385" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0" />
+        <PackageReference Include="StackExchange.Redis" Version="2.9.17" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TourOperatorDataImport.Application\TourOperatorDataImport.Application.csproj" />
+      <ProjectReference Include="..\TourOperatorDataImport.Core\TourOperatorDataImport.Core.csproj" />
+      <ProjectReference Include="..\TourOperatorDataImport.Infrastructure\TourOperatorDataImport.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\CustomSwaggerIndex.html" />
+    </ItemGroup>
+
+</Project>
