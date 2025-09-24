@@ -6,7 +6,7 @@ A high-performance .NET Web API for processing large pricing and seat allocation
 
 ### System Architecture Diagram
 
-![](../TourOperatorDataImport/Diagram.png)
+![](Diagram.png)
 
 
 ### Clean Architecture Layers
