@@ -97,8 +97,7 @@ docker-compose up -d
 
 ### Get connectionId from response and upload to the api
 
-![](../TourOperatorDataImport/connectionId.png)
+![](connectionId.png)
 
-![](../TourOperatorDataImport/upload.png)
-
+![](upload.png)
 
