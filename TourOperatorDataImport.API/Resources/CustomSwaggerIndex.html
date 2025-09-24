@@ -8,21 +8,6 @@
 <h1>File Upload with Progress</h1>
 
 <div>
-    <label for="tourOperatorId">Tour Operator ID:</label>
-    <input type="number" id="tourOperatorId" value="1" />
-</div>
-
-<div>
-    <label for="jwtToken">JWT Token (get this from login):</label>
-    <input type="text" id="jwtToken" placeholder="Paste your JWT token here" style="width: 400px;" />
-</div>
-
-<div>
-    <input type="file" id="fileInput" accept=".csv" />
-    <button onclick="uploadFile()">Upload File</button>
-</div>
-
-<div>
     <h3>Progress:</h3>
     <div id="progress" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;"></div>
 </div>
@@ -66,55 +51,6 @@
     }
 
     startConnection();
-
-    async function uploadFile() {
-        const fileInput = document.getElementById('fileInput');
-        const tourOperatorId = document.getElementById('tourOperatorId').value;
-        const jwtToken = document.getElementById('jwtToken').value;
-        const connectionId = localStorage.getItem('connectionId');
-
-        if (!fileInput.files.length) {
-            alert('Please select a file');
-            return;
-        }
-
-        if (!jwtToken) {
-            alert('Please enter a JWT token');
-            return;
-        }
-
-        if (!connectionId) {
-            alert('Not connected to SignalR. Please wait for connection...');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('file', fileInput.files[0]);
-
-        try {
-            document.getElementById('progress').innerHTML += '📤 Starting file upload...<br>';
-
-            const response = await fetch(`/api/touroperators/pricing-upload?connectionId=${connectionId}`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + jwtToken
-                },
-                body: formData
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
-            }
-
-            const result = await response.json();
-            console.log('Upload result:', result);
-            document.getElementById('progress').innerHTML += `✅ Upload completed: ${result.message}<br>`;
-        } catch (error) {
-            console.error('Upload Error:', error);
-            document.getElementById('progress').innerHTML += `❌ Upload failed: ${error.message}<br>`;
-        }
-    }
 
     // Add event listener for file input change
     document.getElementById('fileInput').addEventListener('change', function(e) {

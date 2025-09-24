@@ -60,23 +60,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             RoleClaimType = ClaimTypes.Role,
             NameClaimType = ClaimTypes.Name
         };
-        
-        options.Events = new JwtBearerEvents
-        {
-            OnTokenValidated = context =>
-            {
-                var claim = context.Principal?.FindFirst("tourOperatorId");
-                if (claim != null)
-                {
-                    var identity = context.Principal.Identity as ClaimsIdentity;
-                    identity?.AddClaim(new Claim(ClaimTypes.NameIdentifier, claim.Value));
-                }
-                return Task.CompletedTask;
-            }
-        };
     });
-
-
 
 builder.Services.AddApplicationHubs();
 builder.Services.AddApplicationServices();
@@ -104,12 +88,14 @@ builder.Services.AddSwaggerGen(c =>
     
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Enter 'Bearer {token}'",
         Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Enter your JWT token in the format: Bearer {your token}"
     });
-    
+
     c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
         {

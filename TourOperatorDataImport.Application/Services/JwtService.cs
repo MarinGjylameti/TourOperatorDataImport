@@ -14,13 +14,16 @@ public class JwtService(IConfiguration configuration) : IJwtService
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, role),
-            new Claim("role", role)
+            new Claim(ClaimTypes.Role, role)
         };
 
         if (tourOperatorId.HasValue)
-            claims.Add(new Claim("tourOperatorId", tourOperatorId.Value.ToString()));
+        {
+            claims.Add(new Claim("TourOperatorId", tourOperatorId.Value.ToString()));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, tourOperatorId.Value.ToString()));
+        }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

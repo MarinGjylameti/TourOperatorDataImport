@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TourOperatorDataImport.Application.Features.Pricing.Commands;
 
@@ -12,17 +13,15 @@ public class PricingController(
     ILogger<PricingController> logger)
     : ControllerBase
 {
+    [Authorize(Roles = "TourOperator")]
     [HttpPost]
     public async Task<IActionResult> UploadPricingData(IFormFile file, string connectionId)
     {
-        var tourOperatorIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        /*if (tourOperatorIdClaim == null)
-            return Unauthorized("TourOperatorId not found in token");
-
+        var tourOperatorIdClaim = User.FindFirst("TourOperatorId")?.Value;
         if (!int.TryParse(tourOperatorIdClaim, out var tourOperatorId))
-            return Unauthorized("Invalid TourOperatorId in token");*/
-
-        var tourOperatorId = 1;
+        {
+            return Unauthorized("TourOperatorId claim missing or invalid.");
+        }
 
         try
         {
