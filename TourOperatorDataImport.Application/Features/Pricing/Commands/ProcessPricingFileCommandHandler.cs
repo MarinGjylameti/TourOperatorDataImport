@@ -1,19 +1,48 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using TourOperatorDataImport.Application.Hubs;
-using TourOperatorDataImport.Application.Interfaces;
-using TourOperatorDataImport.Core.Dtos;
 using TourOperatorDataImport.Core.Entities;
 using TourOperatorDataImport.Infrastructure.Repositories;
 
-namespace TourOperatorDataImport.Application.Services;
+namespace TourOperatorDataImport.Application.Features.Pricing.Commands;
 
-public class PricingService(
-    IPricingRepository pricingRepository,
+public class ProcessPricingFileCommandHandler(
     IHubContext<ProgressHub> hubContext,
-    ILogger<PricingService> logger) : IPricingService
+    IPricingRepository pricingRepository,
+    ILogger<ProcessPricingFileCommandHandler> logger)
+    : IRequestHandler<ProcessPricingFileCommand, ProcessPricingFileResponse>
 {
-    public async Task ProcessPricingFileAsync(int tourOperatorId, Stream fileStream, string? connectionId = null)
+    public async Task<ProcessPricingFileResponse> Handle(ProcessPricingFileCommand request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            logger.LogInformation(
+                "Starting pricing file processing for tour operator {TourOperatorId}", 
+                request.TourOperatorId);
+
+            await ProcessPricingFileAsync(
+                request.TourOperatorId, 
+                request.FileStream, 
+                request.ConnectionId);
+
+            logger.LogInformation(
+                "Pricing file processing completed for tour operator {TourOperatorId}", 
+                request.TourOperatorId);
+
+            return new ProcessPricingFileResponse("File processed successfully", request.ConnectionId ?? string.Empty);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                ex, 
+                "Error processing pricing file for tour operator {TourOperatorId}", 
+                request.TourOperatorId);
+            throw;
+        }
+    }
+
+    private async Task ProcessPricingFileAsync(int tourOperatorId, Stream fileStream, string? connectionId = null)
     {
         await ReportProgressAsync("🔍 Starting CSV file validation...", connectionId);
 
@@ -35,20 +64,6 @@ public class PricingService(
         
         logger.LogInformation("File processed successfully for tour operator {TourOperatorId}. {RecordCount} records inserted.",
             tourOperatorId, records.Count);
-    }
-
-    public async Task<PagedResult<PricingRecord>> GetPricingDataAsync(int tourOperatorId, int page, int pageSize)
-    {
-        var records = await pricingRepository.GetByTourOperatorAsync(tourOperatorId, page, pageSize);
-        var totalCount = await pricingRepository.GetCountByTourOperatorAsync(tourOperatorId);
-
-        return new PagedResult<PricingRecord>
-        {
-            Page = page,
-            PageSize = pageSize,
-            TotalCount = totalCount,
-            Items = records
-        };
     }
 
     private async Task<List<PricingRecord>> ParseCsvFileAsync(Stream fileStream, int tourOperatorId, string? connectionId)

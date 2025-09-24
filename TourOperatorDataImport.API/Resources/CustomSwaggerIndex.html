@@ -94,7 +94,7 @@
         try {
             document.getElementById('progress').innerHTML += '📤 Starting file upload...<br>';
 
-            const response = await fetch(`/api/touroperators/${tourOperatorId}/pricing-upload?connectionId=${connectionId}`, {
+            const response = await fetch(`/api/touroperators/pricing-upload?connectionId=${connectionId}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + jwtToken

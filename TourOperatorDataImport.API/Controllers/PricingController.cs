@@ -1,34 +1,47 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using TourOperatorDataImport.Application.Interfaces;
+using TourOperatorDataImport.Application.Features.Pricing.Commands;
 
 namespace TourOperatorDataImport.API.Controllers;
 
 [ApiController]
-[Route("api/touroperators/{tourOperatorId}/pricing-upload")]
+[Route("api/pricing-upload")]
 public class PricingController(
-    IPricingService pricingService,
+    IMediator mediator,
     ILogger<PricingController> logger)
     : ControllerBase
 {
-    [Authorize(Roles = "TourOperator")]
     [HttpPost]
-    public async Task<IActionResult> UploadPricingData(int tourOperatorId, IFormFile file, string connectionId)
+    public async Task<IActionResult> UploadPricingData(IFormFile file, string connectionId)
     {
-        if (file.Length == 0)
-            return BadRequest("No file uploaded");
+        var tourOperatorIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        /*if (tourOperatorIdClaim == null)
+            return Unauthorized("TourOperatorId not found in token");
+
+        if (!int.TryParse(tourOperatorIdClaim, out var tourOperatorId))
+            return Unauthorized("Invalid TourOperatorId in token");*/
+
+        var tourOperatorId = 1;
 
         try
         {
             await using var stream = file.OpenReadStream();
-            await pricingService.ProcessPricingFileAsync(tourOperatorId, stream, connectionId);
+            
+            var command = new ProcessPricingFileCommand(tourOperatorId, stream, connectionId);
+            var result = await mediator.Send(command);
 
             return Ok(new
             {
-                message = "File processed successfully",
-                connectionId = connectionId
+                message = result.Message,
+                connectionId = result.ConnectionId
             });
+        }
+        catch (FluentValidation.ValidationException ex)
+        {
+            logger.LogWarning("Validation failed for pricing upload: {Errors}", ex.Message);
+            return BadRequest(new { errors = ex.Errors.Select(e => e.ErrorMessage) });
         }
         catch (Exception ex)
         {

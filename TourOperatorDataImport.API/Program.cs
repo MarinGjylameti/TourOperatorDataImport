@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -47,9 +46,6 @@ builder.Services.AddSignalR(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -61,18 +57,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
             ClockSkew = TimeSpan.FromSeconds(30),
-            RoleClaimType = ClaimTypes.Role
+            RoleClaimType = ClaimTypes.Role,
+            NameClaimType = ClaimTypes.Name
         };
-
+        
         options.Events = new JwtBearerEvents
         {
-            OnMessageReceived = context =>
+            OnTokenValidated = context =>
             {
-                var accessToken = context.Request.Query["access_token"].FirstOrDefault();
-                var path = context.HttpContext.Request.Path;
-                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/progressHub"))
+                var claim = context.Principal?.FindFirst("tourOperatorId");
+                if (claim != null)
                 {
-                    context.Token = accessToken;
+                    var identity = context.Principal.Identity as ClaimsIdentity;
+                    identity?.AddClaim(new Claim(ClaimTypes.NameIdentifier, claim.Value));
                 }
                 return Task.CompletedTask;
             }
@@ -80,12 +77,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
+
 builder.Services.AddApplicationHubs();
+builder.Services.AddApplicationServices();
 
 builder.Services.AddScoped<IPricingRepository, PricingRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IPricingService, PricingService>();
 
 
 builder.Host.UseSerilog();

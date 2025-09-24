@@ -1,7 +1,9 @@
 ﻿using System.Text.Json;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using TourOperatorDataImport.Application.Features.Pricing.Queries;
 using TourOperatorDataImport.Application.Interfaces;
 using TourOperatorDataImport.Core.Dtos;
 using TourOperatorDataImport.Core.Entities;
@@ -11,7 +13,7 @@ namespace TourOperatorDataImport.API.Controllers;
 [ApiController]
 [Route("api/data/{tourOperatorId}")]
 public class DataController(
-    IPricingService pricingService,
+    IMediator mediator,
     IDistributedCache cache,
     ILogger<DataController> logger)
     : ControllerBase
@@ -31,7 +33,8 @@ public class DataController(
                 return Ok(JsonSerializer.Deserialize<PagedResult<PricingRecord>>(cachedData));
             }
 
-            var result = await pricingService.GetPricingDataAsync(tourOperatorId, page, pageSize);
+            var query = new GetPricingDataQuery(tourOperatorId, page, pageSize);
+            var result = await mediator.Send(query);
 
             var cacheOptions = new DistributedCacheEntryOptions
             {
@@ -41,6 +44,11 @@ public class DataController(
             await cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(result), cacheOptions);
             
             return Ok(result);
+        }
+        catch (FluentValidation.ValidationException ex)
+        {
+            logger.LogWarning("Validation failed for pricing data query: {Errors}", ex.Message);
+            return BadRequest(new { errors = ex.Errors.Select(e => e.ErrorMessage) });
         }
         catch (Exception ex)
         {
