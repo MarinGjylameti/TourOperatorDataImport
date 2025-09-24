@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using TourOperatorDataImport.Application.Features.Pricing.Queries;
-using TourOperatorDataImport.Application.Interfaces;
 using TourOperatorDataImport.Core.Dtos;
 using TourOperatorDataImport.Core.Entities;
 

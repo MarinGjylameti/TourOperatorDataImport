@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TourOperatorDataImport.Core.Enums;
 using Microsoft.AspNetCore.Authorization;
-using TourOperatorDataImport.Application.Features.Auth.Commands;
 using TourOperatorDataImport.Application.Features.Auth.Commands.Login;
 using TourOperatorDataImport.Application.Features.Auth.Commands.Register;
 
