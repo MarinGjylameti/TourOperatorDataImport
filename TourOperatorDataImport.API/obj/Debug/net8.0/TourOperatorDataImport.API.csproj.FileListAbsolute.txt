@@ -352,3 +352,4 @@ C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataIm
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.API\obj\Debug\net8.0\TourOperatorDataImport.API.pdb
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.API\obj\Debug\net8.0\TourOperatorDataImport.API.genruntimeconfig.cache
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.API\obj\Debug\net8.0\ref\TourOperatorDataImport.API.dll
+C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.API\obj\Debug\net8.0\TourOperatorDataImport.API.sourcelink.json

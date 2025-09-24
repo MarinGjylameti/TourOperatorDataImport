@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using TourOperatorDataImport.Application.Interfaces;
@@ -15,6 +16,7 @@ public class DataController(
     ILogger<DataController> logger)
     : ControllerBase
 {
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> GetPricingData(int tourOperatorId, [FromQuery] int page = 1, [FromQuery] int pageSize = 100)
     {

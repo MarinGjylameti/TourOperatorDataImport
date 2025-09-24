@@ -12,6 +12,7 @@ public class PricingController(
     ILogger<PricingController> logger)
     : ControllerBase
 {
+    [Authorize(Roles = "TourOperator")]
     [HttpPost]
     public async Task<IActionResult> UploadPricingData(int tourOperatorId, IFormFile file, string connectionId)
     {

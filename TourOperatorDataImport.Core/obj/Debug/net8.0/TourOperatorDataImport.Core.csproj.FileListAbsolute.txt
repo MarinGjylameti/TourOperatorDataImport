@@ -20,3 +20,4 @@ C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataIm
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Core\obj\Debug\net8.0\refint\TourOperatorDataImport.Core.dll
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Core\obj\Debug\net8.0\TourOperatorDataImport.Core.pdb
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Core\obj\Debug\net8.0\ref\TourOperatorDataImport.Core.dll
+C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Core\obj\Debug\net8.0\TourOperatorDataImport.Core.sourcelink.json

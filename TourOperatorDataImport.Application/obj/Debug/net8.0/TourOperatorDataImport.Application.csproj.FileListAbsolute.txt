@@ -57,3 +57,4 @@ C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataIm
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Application\bin\Debug\net8.0\TourOperatorDataImport.Infrastructure.pdb
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Application\obj\Debug\net8.0\TourOper.67DE36F4.Up2Date
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Application\obj\Debug\net8.0\ref\TourOperatorDataImport.Application.dll
+C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Application\obj\Debug\net8.0\TourOperatorDataImport.Application.sourcelink.json

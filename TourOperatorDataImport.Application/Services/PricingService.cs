@@ -55,19 +55,18 @@ public class PricingService(
     {
         var records = new List<PricingRecord>();
         using var reader = new StreamReader(fileStream);
-
-        // Read and count lines
+        
         var lines = new List<string>();
         while (await reader.ReadLineAsync() is { } line)
         {
             lines.Add(line);
         }
 
-        var totalLines = lines.Count - 1; // Exclude header
+        var totalLines = lines.Count - 1; 
         var processedCount = 0;
         var errors = new List<string>();
 
-        for (int i = 1; i < lines.Count; i++) // Start from 1 to skip header
+        for (int i = 1; i < lines.Count; i++)
         {
             processedCount++;
             var line = lines[i];
@@ -80,7 +79,6 @@ public class PricingService(
                     records.Add(record);
                 }
 
-                // Report progress every 1000 lines
                 if (processedCount % 1000 == 0 && !string.IsNullOrEmpty(connectionId))
                 {
                     var progressPercentage = (double)processedCount / totalLines * 100;
@@ -126,7 +124,6 @@ public class PricingService(
             CreatedAt = DateTime.UtcNow
         };
 
-        // Validation
         if (record.EconomyPrice < 0 || record.BusinessPrice < 0)
         {
             errors.Add($"Line {lineNumber}: Prices cannot be negative");

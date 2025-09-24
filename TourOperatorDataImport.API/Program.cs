@@ -1,9 +1,11 @@
 using System.Reflection;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using TourOperatorDataImport.Infrastructure.Data;
 using TourOperatorDataImport.Infrastructure.Repositories;
 using Serilog;
@@ -19,17 +21,14 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
     .CreateLogger();
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddLogging();
 
-// Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Redis
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!));
 
@@ -40,16 +39,17 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 builder.Services.AddSignalR(options =>
 {
-    // Increase timeout for debugging
     options.EnableDetailedErrors = true;
     options.ClientTimeoutInterval = TimeSpan.FromMinutes(2);
     options.HandshakeTimeout = TimeSpan.FromMinutes(1);
 });
 
-// Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -59,12 +59,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            ClockSkew = TimeSpan.FromSeconds(30),
+            RoleClaimType = ClaimTypes.Role
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"].FirstOrDefault();
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/progressHub"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
         };
     });
+
+
 builder.Services.AddApplicationHubs();
 
-// Dependency Injection
 builder.Services.AddScoped<IPricingRepository, PricingRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -114,7 +131,14 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "Resources")),
+    RequestPath = "/ui"
+});
+
+app.UseRouting();
 
 if (app.Environment.IsDevelopment())
 {
@@ -132,15 +156,21 @@ else
     app.UseCors("AllowAll");
 }
 
-app.UseSwaggerUI(c =>
+app.MapGet("/upload-ui", async context =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "TourOperator API v1");
-    
-    var assembly = Assembly.GetExecutingAssembly();
-    c.IndexStream = () => assembly.GetManifestResourceStream("TourOperatorDataImport.API.Resources.CustomSwaggerIndex.html");
+    var filePath = Path.Combine(app.Environment.ContentRootPath, "Resources", "CustomSwaggerIndex.html");
+    if (!File.Exists(filePath))
+    {
+        context.Response.StatusCode = 404;
+        await context.Response.WriteAsync("File not found");
+        return;
+    }
+
+    var html = await File.ReadAllTextAsync(filePath);
+    context.Response.ContentType = "text/html";
+    await context.Response.WriteAsync(html);
 });
 
-app.UseRouting();
 app.MapApplicationHubs();
 app.UseApiDocumentation();
 app.UseAuthentication();

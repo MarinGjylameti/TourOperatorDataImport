@@ -90,3 +90,4 @@ C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataIm
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Infrastructure\obj\Debug\net8.0\refint\TourOperatorDataImport.Infrastructure.dll
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Infrastructure\obj\Debug\net8.0\TourOperatorDataImport.Infrastructure.pdb
 C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Infrastructure\obj\Debug\net8.0\ref\TourOperatorDataImport.Infrastructure.dll
+C:\Users\Swiss Computers\RiderProjects\TourOperatorDataImport\TourOperatorDataImport\TourOperatorDataImport.Infrastructure\obj\Debug\net8.0\TourOperatorDataImport.Infrastructure.sourcelink.json
