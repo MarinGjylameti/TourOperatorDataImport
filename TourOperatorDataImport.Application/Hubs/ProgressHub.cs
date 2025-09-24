@@ -9,7 +9,7 @@ public class ProgressHub(ILogger<ProgressHub> logger) : Hub
     {
         logger.LogInformation("🚀 Client connected: {ConnectionId}", Context.ConnectionId);
         
-        await Clients.Caller.SendAsync("Connected", Context.ConnectionId);
+        await Clients.All.SendAsync("Connected", Context.ConnectionId);
         await base.OnConnectedAsync();
     }
 

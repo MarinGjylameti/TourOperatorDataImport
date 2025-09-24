@@ -158,7 +158,7 @@ public class ProcessPricingFileCommandHandler(
     {
         if (!string.IsNullOrEmpty(connectionId))
         {
-            await hubContext.Clients.Client(connectionId).SendAsync("ReceiveProgress", message);
+            await hubContext.Clients.All.SendAsync($"ReceiveProgress", message);
         }
     }
 }

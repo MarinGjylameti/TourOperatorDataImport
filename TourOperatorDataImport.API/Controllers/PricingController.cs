@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TourOperatorDataImport.Application.Features.Pricing.Commands;
@@ -18,6 +17,7 @@ public class PricingController(
     public async Task<IActionResult> UploadPricingData(IFormFile file, string connectionId)
     {
         var tourOperatorIdClaim = User.FindFirst("TourOperatorId")?.Value;
+        
         if (!int.TryParse(tourOperatorIdClaim, out var tourOperatorId))
         {
             return Unauthorized("TourOperatorId claim missing or invalid.");

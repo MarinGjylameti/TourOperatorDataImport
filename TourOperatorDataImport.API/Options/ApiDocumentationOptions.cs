@@ -2,5 +2,5 @@
 
 public class ApiDocumentationOptions
 {
-    public string ApiName { get; set; } = "Tour Operator API";
+    public string ApiName { get; init; } = "Tour Operator API";
 }
